@@ -1,9 +1,11 @@
+// src/app/api/rewrite/route.ts
+
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
   const { description } = await req.json();
 
-  const prompt = `Rewrite the following task description to make it sound clear, professional, and polished:\n\n"${description}"`;
+  const prompt = `Rewrite the following task description to make it sound clear, professional, and aligned with a corporate tone:\n\n${description}`;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -21,7 +23,17 @@ export async function POST(req: Request) {
 
   const data = await response.json();
 
-  return new Response(JSON.stringify(data), {
+  if (!data.choices || !data.choices[0]?.message?.content) {
+    console.error("⚠️ Unexpected response from OpenAI:", data);
+    return new Response(JSON.stringify({ error: "OpenAI response invalid" }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const polished = data.choices[0].message.content.trim();
+
+  return new Response(JSON.stringify({ polished }), {
     headers: { 'Content-Type': 'application/json' },
   });
 }
