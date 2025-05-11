@@ -35,25 +35,19 @@ export default function TaskSegmentGenerator() {
     try {
       const res = await fetch("/api/rewrite", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description }),
       });
-
       const data = await res.json();
-      console.log("🧠 REWRITE RESPONSE:", data);
-
+      console.log("🧠 AI Response:", data);
       if (data.polished) {
         setOutput((prev: any) => ({
           ...prev,
           polished: data.polished,
         }));
-      } else {
-        console.log("⚠️ No polished response in data:", data);
       }
     } catch (err) {
-      console.error("🚨 Rewrite failed:", err);
+      console.error("💥 Rewrite failed", err);
     }
     setLoading(false);
   };
