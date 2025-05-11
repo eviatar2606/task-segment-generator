@@ -50,9 +50,14 @@ export default function TaskSegmentGenerator() {
     });
 
     const data = await res.json();
-    setOutput((prev) =>
-      prev ? { ...prev, polished: data.polished } : prev
-    );
+    console.log("GPT RESPONSE:", data);
+
+    if (data.polished) {
+      setOutput((prev) =>
+        prev ? { ...prev, polished: data.polished } : prev
+      );
+    }
+
     setLoading(false);
   };
 
@@ -78,8 +83,8 @@ export default function TaskSegmentGenerator() {
 
         <div className="flex gap-4">
           <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
-          <button onClick={rewriteWithAI}>
-            ✨ Rewrite with AI
+          <button onClick={rewriteWithAI} disabled={loading}>
+            {loading ? "Rewriting..." : "✨ Rewrite with AI"}
           </button>
         </div>
       </div>
@@ -90,7 +95,7 @@ export default function TaskSegmentGenerator() {
           <p><strong>📝 Title:</strong> {output.refinedTitle}</p>
           <p><strong>📖 Description:</strong> {output.refinedDescription}</p>
           {output.polished && (
-            <p><strong>✨ Polished:</strong> {loading ? "Loading..." : output.polished}</p>
+            <p><strong>✨ Polished:</strong> {output.polished}</p>
           )}
           <p><strong>🧬 Segment (Quirk):</strong> {output.segment}</p>
           <p><strong>✅ Deliverable:</strong> {output.deliverable}</p>
