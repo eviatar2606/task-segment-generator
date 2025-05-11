@@ -21,19 +21,14 @@ export async function POST(req: Request) {
     }),
   });
 
-  const data = await response.json();
+const data = await response.json();
+console.log("🧠 OpenAI raw response:", JSON.stringify(data, null, 2)); // ✅ Add this line
 
-  if (!data.choices || !data.choices[0]?.message?.content) {
-    console.error("⚠️ Unexpected response from OpenAI:", data);
-    return new Response(JSON.stringify({ error: "OpenAI response invalid" }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  const polished = data.choices[0].message.content.trim();
-
-  return new Response(JSON.stringify({ polished }), {
+if (!data.choices || !data.choices[0]?.message?.content) {
+  console.error("⚠️ Unexpected response from OpenAI:", data);
+  return new Response(JSON.stringify({ error: "OpenAI response invalid" }), {
+    status: 500,
     headers: { 'Content-Type': 'application/json' },
   });
 }
+
