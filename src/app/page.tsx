@@ -52,38 +52,38 @@ export default function TaskSegmentGenerator() {
     setLoading(false);
   };
 
-  return (
-    <div>
-      <h1>PLUS ULTRA TASK GENERATOR</h1>
-      <p>Inspired by My Hero Academia. Time to go beyond.</p>
+return (
+  <div>
+    <h1>PLUS ULTRA TASK GENERATOR</h1>
+    <p>Inspired by My Hero Academia. Time to go beyond.</p>
 
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <br />
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <br />
-      <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
-      <button onClick={rewriteWithAI} disabled={loading}>
-        ✨ Rewrite with AI
-      </button>
+    <textarea
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+    />
+    <br />
+    <input
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    />
+    <br />
+    <button onClick={generateOutput}>🌟 Go Beyond! 🌟</button>
+    <button onClick={rewriteWithAI} disabled={loading}>
+      ✨ Rewrite with AI
+    </button>
 
-      {output && (
-        <div>
-          <h2>🎯 Mission Output</h2>
-          <p><strong>📌 Title:</strong> {output.refinedTitle}</p>
-          <p><strong>📄 Description:</strong> {output.refinedDescription}</p>
-          {output.polished && (
-            <p><strong>✨ Polished:</strong> {output.polished}</p>
-          )}
-          <p><strong>🔍 Segment (Quirk):</strong> {output.segment}</p>
-          <p><strong>✅ Deliverable:</strong> {output.deliverable}</p>
-        </div>
-      )}
-    </div>
-  );
+    {output && (
+      <div>
+        <h2>🎯 Mission Output</h2>
+        <p><strong>📌 Title:</strong> {output.refinedTitle}</p>
+        <p><strong>📘 Description:</strong> {output.refinedDescription}</p>
+        {output.polished && (
+          <p><strong>✨ Polished:</strong> {output.polished}</p>
+        )}
+        <p><strong>🧩 Segment (Quirk):</strong> {output.segment}</p>
+        <p><strong>✅ Deliverable:</strong> {output.deliverable}</p>
+      </div>
+    )}
+  </div>
+);
 }
