@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function TaskSegmentGenerator() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [output, setOutput] = useState(null);
+  const [output, setOutput] = useState<{   refinedTitle: string;   refinedDescription: string;   segment: string;   deliverable: string; } | null>(null);
 
   const segments = [
     "Process Investigation & Alignment",
