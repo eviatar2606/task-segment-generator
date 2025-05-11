@@ -12,15 +12,6 @@ export default function TaskSegmentGenerator() {
     deliverable: string;
   } | null>(null);
 
-  const segments = [
-    "Process Investigation & Alignment",
-    "Tools & Data Management",
-    "Collaboration & Relationship Building",
-    "Presentations & Reporting",
-    "Knowledge Transfer & Documentation",
-    "TBD",
-  ];
-
   const generateOutput = () => {
     const refinedTitle = title.trim().replace(/\s+/g, " ");
     const refinedDescription =
@@ -45,36 +36,35 @@ export default function TaskSegmentGenerator() {
   };
 
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
-      <div className="card">
-        <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>
-          Task Segment Generator
-        </h2>
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div className="bg-white rounded-2xl shadow-xl p-6">
+        <h1 className="text-3xl font-bold mb-4 text-red-600">PLUS ULTRA TASK GENERATOR</h1>
+        <p className="text-sm mb-6 text-gray-600 italic">Inspired by My Hero Academia. Time to go beyond.</p>
+
         <input
-          placeholder="Enter task title"
+          placeholder="What’s your task title, young hero?"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          className="mb-4"
         />
+
         <textarea
-          placeholder="Enter task description"
+          placeholder="Write a quick description… like explaining your Quirk!"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          style={{ marginTop: "1rem", minHeight: "100px" }}
+          className="mb-4 min-h-[100px]"
         />
-        <button onClick={generateOutput} style={{ marginTop: "1rem" }}>
-          Generate
-        </button>
+
+        <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
       </div>
 
       {output && (
-        <div className="card">
-          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "1rem" }}>
-            Generated Output
-          </h3>
-          <p><strong>Title:</strong> {output.refinedTitle}</p>
-          <p><strong>Description:</strong> {output.refinedDescription}</p>
-          <p><strong>Segment:</strong> {output.segment}</p>
-          <p><strong>Deliverable:</strong> {output.deliverable}</p>
+        <div className="bg-yellow-100 border-l-4 border-red-500 p-6 rounded-xl shadow space-y-2">
+          <h2 className="text-2xl font-bold text-black">🎯 Mission Output</h2>
+          <p><strong>📝 Title:</strong> {output.refinedTitle}</p>
+          <p><strong>📖 Description:</strong> {output.refinedDescription}</p>
+          <p><strong>🧬 Segment (Quirk):</strong> {output.segment}</p>
+          <p><strong>✅ Deliverable:</strong> {output.deliverable}</p>
         </div>
       )}
     </div>
