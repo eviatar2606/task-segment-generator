@@ -5,7 +5,12 @@ import { useState } from "react";
 export default function TaskSegmentGenerator() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [output, setOutput] = useState<{   refinedTitle: string;   refinedDescription: string;   segment: string;   deliverable: string; } | null>(null);
+  const [output, setOutput] = useState<{
+    refinedTitle: string;
+    refinedDescription: string;
+    segment: string;
+    deliverable: string;
+  } | null>(null);
 
   const segments = [
     "Process Investigation & Alignment",
@@ -40,44 +45,36 @@ export default function TaskSegmentGenerator() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-4">
-      <div className="space-y-4 border p-4 rounded-xl shadow-sm bg-white">
-        <h2 className="text-xl font-semibold">Task Segment Generator</h2>
+    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+      <div className="card">
+        <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>
+          Task Segment Generator
+        </h2>
         <input
           placeholder="Enter task title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded p-2"
         />
         <textarea
           placeholder="Enter task description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded p-2 h-24"
+          style={{ marginTop: "1rem", minHeight: "100px" }}
         />
-        <button
-          onClick={generateOutput}
-          className="bg-black text-white px-4 py-2 rounded"
-        >
+        <button onClick={generateOutput} style={{ marginTop: "1rem" }}>
           Generate
         </button>
       </div>
 
       {output && (
-        <div className="border p-4 rounded-xl shadow-sm bg-white space-y-2">
-          <h3 className="text-lg font-semibold">Generated Output</h3>
-          <p>
-            <strong>Title:</strong> {output.refinedTitle}
-          </p>
-          <p>
-            <strong>Description:</strong> {output.refinedDescription}
-          </p>
-          <p>
-            <strong>Segment:</strong> {output.segment}
-          </p>
-          <p>
-            <strong>Deliverable:</strong> {output.deliverable}
-          </p>
+        <div className="card">
+          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "1rem" }}>
+            Generated Output
+          </h3>
+          <p><strong>Title:</strong> {output.refinedTitle}</p>
+          <p><strong>Description:</strong> {output.refinedDescription}</p>
+          <p><strong>Segment:</strong> {output.segment}</p>
+          <p><strong>Deliverable:</strong> {output.deliverable}</p>
         </div>
       )}
     </div>
