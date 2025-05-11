@@ -1,18 +1,10 @@
 "use client";
-
 import { useState } from "react";
 
 export default function TaskSegmentGenerator() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [output, setOutput] = useState<{
-    refinedTitle: string;
-    refinedDescription: string;
-    segment: string;
-    deliverable: string;
-    polished?: string;
-  } | null>(null);
-
+  const [output, setOutput] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
   const generateOutput = () => {
@@ -39,65 +31,62 @@ export default function TaskSegmentGenerator() {
   };
 
   const rewriteWithAI = async () => {
-    if (!description) return;
     setLoading(true);
-    const res = await fetch("/api/rewrite", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ description }),
-    });
+    try {
+      const res = await fetch("/api/rewrite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ description }),
+      });
 
-    const data = await res.json();
-    console.log("GPT RESPONSE:", data);
+      const data = await res.json();
+      console.log("🧠 REWRITE RESPONSE:", data);
 
-    if (data.polished) {
-      setOutput((prev) =>
-        prev ? { ...prev, polished: data.polished } : prev
-      );
+      if (data.polished) {
+        setOutput((prev: any) => ({
+          ...prev,
+          polished: data.polished,
+        }));
+      } else {
+        console.log("⚠️ No polished response in data:", data);
+      }
+    } catch (err) {
+      console.error("🚨 Rewrite failed:", err);
     }
-
     setLoading(false);
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="bg-white rounded-2xl shadow-xl p-6">
-        <h1 className="text-3xl font-bold mb-4 text-red-600">PLUS ULTRA TASK GENERATOR</h1>
-        <p className="text-sm mb-6 text-gray-600 italic">Inspired by My Hero Academia. Time to go beyond.</p>
+    <div>
+      <h1>PLUS ULTRA TASK GENERATOR</h1>
+      <p>Inspired by My Hero Academia. Time to go beyond.</p>
 
-        <input
-          placeholder="What’s your task title, young hero?"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="mb-4"
-        />
-
-        <textarea
-          placeholder="Write a quick description… like explaining your Quirk!"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="mb-4 min-h-[100px]"
-        />
-
-        <div className="flex gap-4">
-          <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
-          <button onClick={rewriteWithAI} disabled={loading}>
-            {loading ? "Rewriting..." : "✨ Rewrite with AI"}
-          </button>
-        </div>
-      </div>
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <br />
+      <input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <br />
+      <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
+      <button onClick={rewriteWithAI} disabled={loading}>
+        ✨ Rewrite with AI
+      </button>
 
       {output && (
-        <div className="bg-yellow-100 border-l-4 border-red-500 p-6 rounded-xl shadow space-y-2">
-          <h2 className="text-2xl font-bold text-black">🎯 Mission Output</h2>
-          <p><strong>📝 Title:</strong> {output.refinedTitle}</p>
-          <p><strong>📖 Description:</strong> {output.refinedDescription}</p>
+        <div>
+          <h2>🎯 Mission Output</h2>
+          <p><strong>📌 Title:</strong> {output.refinedTitle}</p>
+          <p><strong>📄 Description:</strong> {output.refinedDescription}</p>
           {output.polished && (
             <p><strong>✨ Polished:</strong> {output.polished}</p>
           )}
-          <p><strong>🧬 Segment (Quirk):</strong> {output.segment}</p>
+          <p><strong>🔍 Segment (Quirk):</strong> {output.segment}</p>
           <p><strong>✅ Deliverable:</strong> {output.deliverable}</p>
         </div>
       )}
