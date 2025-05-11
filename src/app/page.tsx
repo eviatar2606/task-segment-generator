@@ -10,7 +10,10 @@ export default function TaskSegmentGenerator() {
     refinedDescription: string;
     segment: string;
     deliverable: string;
+    polished?: string;
   } | null>(null);
+
+  const [loading, setLoading] = useState(false);
 
   const generateOutput = () => {
     const refinedTitle = title.trim().replace(/\s+/g, " ");
@@ -35,6 +38,24 @@ export default function TaskSegmentGenerator() {
     setOutput({ refinedTitle, refinedDescription, segment, deliverable });
   };
 
+  const rewriteWithAI = async () => {
+    if (!description) return;
+    setLoading(true);
+    const res = await fetch("/api/rewrite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ description }),
+    });
+
+    const data = await res.json();
+    setOutput((prev) =>
+      prev ? { ...prev, polished: data.polished } : prev
+    );
+    setLoading(false);
+  };
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -55,7 +76,12 @@ export default function TaskSegmentGenerator() {
           className="mb-4 min-h-[100px]"
         />
 
-        <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
+        <div className="flex gap-4">
+          <button onClick={generateOutput}>💥 Go Beyond! 💥</button>
+          <button onClick={rewriteWithAI}>
+            ✨ Rewrite with AI
+          </button>
+        </div>
       </div>
 
       {output && (
@@ -63,6 +89,9 @@ export default function TaskSegmentGenerator() {
           <h2 className="text-2xl font-bold text-black">🎯 Mission Output</h2>
           <p><strong>📝 Title:</strong> {output.refinedTitle}</p>
           <p><strong>📖 Description:</strong> {output.refinedDescription}</p>
+          {output.polished && (
+            <p><strong>✨ Polished:</strong> {loading ? "Loading..." : output.polished}</p>
+          )}
           <p><strong>🧬 Segment (Quirk):</strong> {output.segment}</p>
           <p><strong>✅ Deliverable:</strong> {output.deliverable}</p>
         </div>
